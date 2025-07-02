@@ -1,0 +1,27 @@
+# Core pour les notebooks
+jupyterlab
+notebook
+python-dotenv
+
+# Accès aux LLMs & Ecosystème Hugging Face
+openai
+langchain
+langchain-openai
+huggingface_hub
+transformers
+accelerate
+bitsandbytes
+
+# Vector Stores pour RAG
+faiss-cpu
+chromadb
+pypdf
+
+# WebApp
+gradio
+
+# Outils CLI
+# gemini-cli (si installable via pip)
+
+# n8n n'est pas une dépendance Python, à installer via Docker/npm
+

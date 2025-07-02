@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Chat and File Upload</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .header {
+            background: #4a90e2;
+            color: white;
+            padding: 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input[type="file"], input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 22px);
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        #chat-container {
+            margin-top: 20px;
+        }
+        #chat-box {
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            background-color: #fafafa;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 18px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #f1f0f0;
+            align-self: flex-start;
+        }
+        #upload-status, #chat-status {
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>MINERVA Project AI Assistant</h1>
+        </div>
+        <div class="content">
+            <h2>Upload PDF Document</h2>
+            <form id="upload-form">
+                <input type="file" id="file-input" name="file" accept=".pdf" required>
+                <button type="submit">Upload</button>
+            </form>
+            <div id="upload-status"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content">
+            <h2>Chat with RAG Agent</h2>
+            <div id="chat-box"></div>
+            <form id="chat-form">
+                <input type="text" id="chat-input" placeholder="Ask a question..." required>
+                <button type="submit">Send</button>
+            </form>
+            <div id="chat-status"></div>
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANT: Replace these with your actual n8n webhook URLs
+        const fileUploadUrl = 'http://localhost:5678/webhook/04adf862-8120-4a1d-94ca-66a49c27fe5b';
+        const chatUrl = 'http://localhost:5678/webhook-test/c47f32b6-3cc5-4760-8681-6c7431f57409';
+
+        const uploadForm = document.getElementById('upload-form');
+        const fileInput = document.getElementById('file-input');
+        const uploadStatus = document.getElementById('upload-status');
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            uploadStatus.textContent = 'Uploading...';
+            try {
+                const response = await fetch(fileUploadUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    uploadStatus.textContent = 'File uploaded successfully!';
+                    fileInput.value = '';
+                } else {
+                    const errorText = await response.text();
+                    uploadStatus.textContent = `Upload failed: ${errorText}`;
+                }
+            } catch (error) {
+                uploadStatus.textContent = `Error: ${error.message}`;
+            }
+        });
+
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatBox = document.getElementById('chat-box');
+        const chatStatus = document.getElementById('chat-status');
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = chatInput.value;
+            if (!message) return;
+
+            appendMessage(message, 'user');
+            chatInput.value = '';
+            chatStatus.textContent = 'Thinking...';
+
+            try {
+                const response = await fetch(chatUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (response.ok) {
+                    const botResponse = await response.text();
+                    appendMessage(botResponse, 'bot');
+                    chatStatus.textContent = '';
+                } else {
+                    const errorText = await response.text();
+                    appendMessage(`Error: ${errorText}`, 'bot');
+                    chatStatus.textContent = 'Failed to get response.';
+                }
+            } catch (error) {
+                appendMessage(`Error: ${error.message}`, 'bot');
+                chatStatus.textContent = 'Error sending message.';
+            }
+        });
+
+        function appendMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+            messageElement.textContent = text;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
+
