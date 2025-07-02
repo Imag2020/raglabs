@@ -1,3 +1,4 @@
+
 # Workshop RagLabs : Ingénierie IA
 
 ### Construire et orchestrer des agents, de Python pur aux plateformes open-source
@@ -62,10 +63,10 @@ Voici le détail des modules que nous allons parcourir. Chaque module correspond
 *   **[3. Créer un Agent IA "from scratch"](./notebooks/03_agent_ia_from_scratch.ipynb)**
     *   Comprendre les principes fondamentaux des agents IA et leur implémentation sans dépendances complexes.
 
-*   **[4. Agents No-Code (Llama-Index, GEMINI-CLI)](./notebooks/04_agents_no_code.ipynb)**
+*   **[4. Agents No-Code (VS+Cline, GEMINI-CLI)](./notebooks/04_agents_no_code.ipynb)**
     *   Découvrez comment utiliser des outils puissants en ligne de commande pour créer des agents et des applications sans écrire de code complexe.
 
-*   **[5. n8n : Installation locale workflows et agents IA ](./notebooks/05_n8n_agents.ipynb)**
+*   **[5. n8n : Installation locale workflows et agents IA ](./notebooks/05_n8n_ai_agents.ipynb)**
     *   Installez la plateforme d'automatisation n8n et créez vos premiers workflows d'automatisation.
 
 *   **[6. Exemple de RAG Multi-Modal ](./notebooks/06_rag_multimodal_rag.ipynb)**
