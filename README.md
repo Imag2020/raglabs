@@ -54,7 +54,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 Voici le détail des modules que nous allons parcourir. Chaque module correspond à un notebook Jupyter.
 
 *   **[1.Introduction aux LLMs et VLMs (Local & API)](./notebooks/01_llm_vlm_access.ipynb)**
-    *   Comprendre les bases de l'interaction avec les LLMs/VLMs et configurer un environnement pour interagir avec ces modèles.
+    *   Comprendre les bases de l'interaction avec les LLMs/VLMs, configurer un environnement pour interagir avec ces modèles.
 
 *   **[2. Serveurs & Clients MCP](./notebooks/02_mcp_servers_clients.ipynb)**
     *  Apprendre à configurer et utiliser des serveurs MCP pour des interactions avancées avec les LLMs.
@@ -65,11 +65,11 @@ Voici le détail des modules que nous allons parcourir. Chaque module correspond
 *   **[4. Agents No-Code (Llama-Index, GEMINI-CLI)](./notebooks/04_agents_no_code.ipynb)**
     *   Découvrez comment utiliser des outils puissants en ligne de commande pour créer des agents et des applications sans écrire de code complexe.
 
-*   **[5. n8n : Installation locale et workflows](./notebooks/05_n8n_introduction.ipynb)**
+*   **[5. n8n : Installation locale workflows et agents IA ](./notebooks/05_n8n_agents.ipynb)**
     *   Installez la plateforme d'automatisation n8n et créez vos premiers workflows d'automatisation.
 
-*   **[6. Exemple de RAG Multi-Modal Avancé](./notebooks/06_rag_multimodal_rag.ipynb)**
-    *    Comprendre et appliquer les concepts de RAG pour des cas d'usage avancés.
+*   **[6. Exemple de RAG Multi-Modal ](./notebooks/06_rag_multimodal_rag.ipynb)**
+    *    Comprendre et appliquer les concepts de RAG pour des cas d'usage avancés. Génerer le front end avec du No Code.
 
 *   **[7. Construire une WebApp "NotebooLM"](./notebooks/07_webapp_notebooklm.ipynb)**
     *   Utiliser n8n & fastapi comme backend et construire un frontend React/Vite en No Code pour une WebApp RAG.
