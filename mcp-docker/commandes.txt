@@ -1,0 +1,9 @@
+docker system prune -a
+docker ps -a
+docker build -t mcp-desktop .
+docker run --name mcp -e VNC_PASSWORD=secure123 -p 5901:5901 -p 6901:6901 -p 8001:8001 -v $(pwd)/mcp-data:/home/mcp/data mcp-desktop
+
+docker stop sad_noyce
+docker rm sad_noyce
+
+
